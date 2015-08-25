@@ -5,6 +5,7 @@ import static org.junit.Assert.fail;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +23,7 @@ import cucumber.api.java.en.When;
 
 public class Stepdefs {
 
-  private static final String BASE_URL = "http://localhost:8080";
+//  private static final String BASE_URL = "http://localhost:8080";
 
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
@@ -31,12 +32,15 @@ public class Stepdefs {
   private HealthStatus healthResponse;
   private ThirdPartyHealthStatus tpHealth;
 
+  @Value( "${target.url}" )
+  private String baseUrl;
+
   @Given("^the app has started$")
   public void the_app_has_started() throws Throwable {
-
+    System.err.println("BASE URL: " + baseUrl);
     String body;
     try {
-      body = rest.getForObject(BASE_URL, String.class);
+      body = rest.getForObject(baseUrl, String.class);
     } catch (HttpClientErrorException e) {
       // Happy path with 404 expected
       log.warn(e.getMessage());
@@ -48,7 +52,7 @@ public class Stepdefs {
 
   @When("^I invoke the health endpoint$")
   public void i_invoke_the_health_endpoint() throws Throwable {
-    healthResponse = rest.getForObject(BASE_URL + "/health", HealthStatus.class);
+    healthResponse = rest.getForObject(baseUrl + "/health", HealthStatus.class);
   }
 
   @Then("^the status of the app is UP$")
@@ -58,7 +62,7 @@ public class Stepdefs {
 
   @When("^I invoke the third party service health check endpoint$")
   public void i_invoke_the_third_party_service_health_check_endpoint() throws Throwable {
-    tpHealth = rest.getForObject(BASE_URL + "/health", ThirdPartyHealthStatus.class);
+    tpHealth = rest.getForObject(baseUrl + "/health", ThirdPartyHealthStatus.class);
   }
 
   @Then("^the status of the third party is UP$")
