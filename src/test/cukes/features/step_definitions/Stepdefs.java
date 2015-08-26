@@ -5,12 +5,12 @@ import static org.junit.Assert.fail;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.actuate.health.Status;
 import org.springframework.web.client.HttpClientErrorException;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.client.RestOperations;
 
-import com.emc.demo.ThirdPartyServiceHealthIndicator;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
@@ -23,16 +23,15 @@ import cucumber.api.java.en.When;
 
 public class Stepdefs {
 
-//  private static final String BASE_URL = "http://localhost:8080";
-
   private final Logger log = LoggerFactory.getLogger(this.getClass());
 
-  RestTemplate rest = new RestTemplate();
+  @Autowired
+  RestOperations rest;
 
   private HealthStatus healthResponse;
   private ThirdPartyHealthStatus tpHealth;
 
-  @Value( "${target.url}" )
+  @Value("${target.url}")
   private String baseUrl;
 
   @Given("^the app has started$")
@@ -69,12 +68,12 @@ public class Stepdefs {
   public void the_status_of_the_third_party_is_UP() throws Throwable {
     assertEquals(Status.UP.toString(), tpHealth.getData().getStatus());
   }
-  
-  @And("^the host has been returned by their API$")
-  public void the_host_has_been_returned_by_their_API() throws Throwable {
-    assertEquals(ThirdPartyServiceHealthIndicator.THIRD_PARTY_HOST, tpHealth.getData().getThirdPartyHost());
-  }
 
+  @And("^their API is stable$")
+  public void their_API_is_stable() throws Throwable {
+    assertEquals(true, tpHealth.getData().isStable());
+  }
+  
   @JsonIgnoreProperties(ignoreUnknown = true)
   static class HealthStatus {
     String status;
@@ -92,13 +91,13 @@ public class Stepdefs {
   static class ThirdPartyHealthStatus {
 
     @JsonProperty("thirdPartyService")
-    private ThirdPartyHealthStatusData data;
+    private ThirdPartyAPIHealthStatusData data;
 
-    public ThirdPartyHealthStatusData getData() {
+    public ThirdPartyAPIHealthStatusData getData() {
       return data;
     }
 
-    public void setData(ThirdPartyHealthStatusData data) {
+    public void setData(ThirdPartyAPIHealthStatusData data) {
       this.data = data;
     }
 
@@ -106,16 +105,17 @@ public class Stepdefs {
 
   @JsonIgnoreProperties(ignoreUnknown = true)
   @JsonInclude(Include.NON_EMPTY)
-  static class ThirdPartyHealthStatusData extends HealthStatus {
+  static class ThirdPartyAPIHealthStatusData extends HealthStatus {
 
-    private String thirdPartyHost;
+    @JsonProperty("hasStableAPI")
+    private boolean isStable;
 
-    public String getThirdPartyHost() {
-      return thirdPartyHost;
+    public boolean isStable() {
+      return isStable;
     }
 
-    public void setThirdPartyHost(String thirdPartyHost) {
-      this.thirdPartyHost = thirdPartyHost;
+    public void setStable(boolean isStable) {
+      this.isStable = isStable;
     }
 
   }
