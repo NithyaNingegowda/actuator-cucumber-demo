@@ -12,7 +12,10 @@ The main purpose of this app is to demonstrate
 
 ###### Customisation of Spring Boot health endpoints
 
+* Here we expose additional health data relating to our ability to connect with a 3rd party REST API
 * See the code in com.emc.demo with class names ThirdParty*.java
+* The hook into Spring Boot is the ThirdPartyServiceHealthIndicator
+* The status includes whether the 3rd party has changed their response structure. This is achieved by providing a specifically configured ObjectMapper in ThirdPartyServiceConfig which will fail if the response does not conform to our response object com.emc.demo.ThirdPartyService.ThirdPartyResponse (Note the line in ThirdPartyServiceConfig which creates the ObjectMapper with Jackson2ObjectMapperBuilder.json().failOnUnknownProperties(true).build();)
 
 ###### Cucumber testing against those endpoints
 
