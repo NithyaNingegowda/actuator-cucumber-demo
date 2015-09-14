@@ -6,7 +6,6 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.support.PropertySourcesPlaceholderConfigurer;
 
 @Configuration
-@PropertySource({ "classpath:system-under-test-${envTarget:local}.properties" })
 public class SpringBootstrap {
 
   @Bean

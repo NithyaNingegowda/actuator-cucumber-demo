@@ -25,9 +25,8 @@ The main purpose of this app is to demonstrate
 
 ###### Spring property driven target urls for the test suite to use
 
-* See the system-under-test-*.properties in src/test/resources
 * See features.step_definitions.SpringBootstrap in src/test/cukes
-* Note that the default is local and that -DenvTarget=dev is used to invoke a PCF hosted version of the app
+* Note that the default is localhost:8080 and that -DtargetRootUrl=X is used to invoke a hosted version of the app
 
 ###### Binding of cucumber tests to Maven with the failsafe plug-in rather than the surefire plug-in
 

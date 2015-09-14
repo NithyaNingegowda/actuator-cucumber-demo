@@ -31,7 +31,7 @@ public class Stepdefs {
   private HealthStatus healthResponse;
   private ThirdPartyHealthStatus tpHealth;
 
-  @Value("${target.url}")
+  @Value("${targetRootUrl:http://localhost:8080}")
   private String baseUrl;
 
   @Given("^the app has started$")
