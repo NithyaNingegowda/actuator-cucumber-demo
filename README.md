@@ -7,7 +7,7 @@ The main purpose of this app is to demonstrate
 1. Customisation of Spring Boot health endpoints
 2. Cucumber testing against those endpoints
 3. Spring wired cucumber tests
-4. Spring Profile driven target urls for the test suite to use
+4. Spring property driven target urls for the test suite to use
 5. Binding of cucumber tests to Maven with the failsafe plug-in rather than the surefire plug-in
 
 ###### Customisation of Spring Boot health endpoints
@@ -23,7 +23,7 @@ The main purpose of this app is to demonstrate
 
 * This is fairly standard, starting with the cucumber.xml
 
-###### Spring Profile driven target urls for the test suite to use
+###### Spring property driven target urls for the test suite to use
 
 * See the system-under-test-*.properties in src/test/resources
 * See features.step_definitions.SpringBootstrap in src/test/cukes
