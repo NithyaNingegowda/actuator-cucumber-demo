@@ -48,6 +48,19 @@ public class Stepdefs {
     log.error("Unexpected response: " + body);
     fail("Should have been a 404 page not found");
   }
+  
+  
+  
+  
+  
+  
+  
+  
+  /*
+   * POC
+   * STEPS
+   * 
+   */
 
   @When("^I invoke the health endpoint$")
   public void i_invoke_the_health_endpoint() throws Throwable {

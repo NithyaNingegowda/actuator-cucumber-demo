@@ -1,5 +1,5 @@
 @poc
-Feature: sanity checks on poc app which connects to a third party REST API
+Feature: smoke tests on poc app including connecting to a third party REST API
 
   Background: full end to end test with app pre-deployed
     Given the app has started
